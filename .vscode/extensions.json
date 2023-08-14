@@ -3,6 +3,7 @@
     "davidanson.vscode-markdownlint",
     "editorconfig.editorconfig",
     "stkb.rewrap",
+    "streetsidesoftware.code-spell-checker",
     "travisillig.vscode-json-stable-stringify"
   ]
 }
