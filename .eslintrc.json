@@ -7,12 +7,23 @@
     "plugin:jsdoc/recommended",
     "google"
   ],
+  "overrides": [
+    {
+      "env": {
+        "mocha": true
+      },
+      "files": [
+        "test/**/*.js"
+      ]
+    }
+  ],
   "parserOptions": {
     "ecmaVersion": 11,
     "sourceType": "module"
   },
   "plugins": [
-    "jsdoc"
+    "jsdoc",
+    "mocha"
   ],
   "root": true,
   "rules": {

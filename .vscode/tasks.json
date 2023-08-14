@@ -1,0 +1,25 @@
+{
+  "tasks": [
+    {
+      "detail": "Lint and test.",
+      "group": {
+        "isDefault": true,
+        "kind": "build"
+      },
+      "label": "npm: build",
+      "script": "build",
+      "type": "npm"
+    },
+    {
+      "detail": "Test.",
+      "group": {
+        "isDefault": true,
+        "kind": "test"
+      },
+      "label": "npm: test",
+      "script": "test",
+      "type": "npm"
+    }
+  ],
+  "version": "2.0.0"
+}
