@@ -1,0 +1,31 @@
+{
+  "author": "Travis Illig",
+  "bin": {
+    "json-sort": "json-sort.js"
+  },
+  "bugs": {
+    "url": "https://github.com/tillig/pre-commit-json-sort/issues"
+  },
+  "dependencies": {
+    "editorconfig": "^2.0.0",
+    "json-stable-stringify": "^1.0.2"
+  },
+  "description": "Runs JSON stable sort on specified files as a pre-commit hook.",
+  "devDependencies": {
+    "eslint": "^8.47.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-jsdoc": "^46.4.6"
+  },
+  "homepage": "https://github.com/tillig/pre-commit-json-sort#readme",
+  "license": "MIT",
+  "main": "json-sort.js",
+  "name": "pre-commit-json-sort",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tillig/pre-commit-json-sort.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.0"
+}
