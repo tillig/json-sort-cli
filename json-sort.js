@@ -3,16 +3,14 @@
 'use strict';
 
 const process = require('node:process');
-const { glob } = require('glob');
 // const json5 = require('json5');
 // const stringify = require('json-stable-stringify');
+const yargs = require('yargs/yargs');
+const { hideBin } = require('yargs/helpers');
 
 // pre-commit try-repo /path/to/cloned/pre-commit-json-sort json-sort
 
-// TODO: Parameter(s) for which files to format.
-// TODO: Parameter for autofix.
-// TODO: Parameter for indent (stringify opts.space, default to two spaces).
-// TODO: Parameter for newline at end of file (default to true)
+// TODO: Create options based on parameters and .editorconfig.
 // TODO: Override indent based on .editorconfig.
 // TODO: Override newline at end of file based on .editorconfig.
 /*
@@ -38,9 +36,28 @@ const { glob } = require('glob');
  * Primary entry point for the hook.
  */
 async function main() {
-  console.log('Ran the hook.');
-  const files = await glob('**/*.json', { ignore: 'node_modules/**' });
-  files.forEach((file) => console.log(file));
+  const argv = await yargs(hideBin(process.argv))
+    .option('indent', {
+      type: 'string',
+      description: 'Number of spaces to indent, or a string to use as the indent. Defaults to 2 spaces. Overrides .editorconfig settings if an .editorconfig is found.'
+    })
+    .option('autofix', {
+      type: 'boolean',
+      description: 'Update files with fixes instead of just reporting. Defaults to reporting only.',
+      default: false
+    })
+    .option('final-newline', {
+      type: 'boolean',
+      description: 'Insert a final newline after the sort. Overrides .editorconfig settings if an .editorconfig is found.'
+    })
+    .parseAsync();
+
+  console.log(`indent = ${argv.indent}`);
+  console.log(`autofix = ${argv.autofix}`);
+  console.log(`final-newline = ${argv.finalNewline}`);
+
+  // _ is automatically set to the list of JSON files by pre-commit. We don't have to manage that ourselves.
+  console.log(`_ = ${argv._}`);
 }
 
 main().then(() => process.exit(0));
