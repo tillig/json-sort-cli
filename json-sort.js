@@ -61,12 +61,15 @@ async function main() {
   console.log(`autofix = ${argv.autofix}`);
 
   const overrides = opt.createOverrides(argv);
-  console.log(`indent-size = ${overrides.indent_size}`);
-  console.log(`indent-style = ${overrides.indent_style}`);
-  console.log(`insert-final-newline = ${overrides.insert_final_newline}`);
 
   // _ is automatically set to the list of JSON files by pre-commit. We don't have to manage that ourselves.
-  console.log(`_ = ${argv._}`);
+  for (const file of argv._) {
+    const format = await opt.createFormatOptions(file, overrides);
+    console.log(`file = ${file}`);
+    console.log(`indent-size = ${format.indent_size}`);
+    console.log(`indent-style = ${format.indent_style}`);
+    console.log(`insert-final-newline = ${format.insert_final_newline}`);
+  }
 }
 
 main().then(() => process.exit(0));
