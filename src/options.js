@@ -26,12 +26,29 @@ exports.createFormatOptions = async function (filePath, overrides) {
   const config = await editorconfig.parse(filePath, { cache });
 
   // Defaults => editorconfig => manual overrides.
-  return Object.assign({
+  const merged = Object.assign({
     indent_size: 2,
     indent_style: 'space',
     insert_final_newline: true
   }, Object.assign(config, overrides));
+
+  // Now make _that_ into json-stable-stringify options and add that to the object.
+  merged.stringify_options = { space: calculateStringifyOptions(merged) };
+  return merged;
 };
+
+/**
+ * Calculates the json-stable-stringify options based on merged .editorconfig settings.
+ * @param {editorconfig.KnownProps} source The set of .editorconfig options from which to base the calculations.
+ * @returns {object} The value of options.space to pass to json-stable-stringify.
+ */
+function calculateStringifyOptions(source) {
+  if (source.indent_style === 'tab') {
+    return '\t';
+  }
+
+  return source.indent_size;
+}
 
 /**
  * Converts the parsed arguments for the command into a set of formatting override options.

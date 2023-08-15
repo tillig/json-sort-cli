@@ -61,4 +61,24 @@ describe('createFormatOptions', () => {
     assert.strictEqual(true, options.insert_final_newline);
     assert.strictEqual('space', options.indent_style);
   });
+
+  it('calculates stringify options for tabs', async () => {
+    const overrides = {
+      indent_size: 4,
+      indent_style: 'tab'
+    };
+    const options = await opt.createFormatOptions('test.json', overrides);
+
+    assert.strictEqual('\t', options.stringify_options.space);
+  });
+
+  it('calculates stringify options for spaces', async () => {
+    const overrides = {
+      indent_size: 4,
+      indent_style: 'space'
+    };
+    const options = await opt.createFormatOptions('test.json', overrides);
+
+    assert.strictEqual(4, options.stringify_options.space);
+  });
 });
