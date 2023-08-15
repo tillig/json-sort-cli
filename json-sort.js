@@ -8,6 +8,8 @@ const process = require('node:process');
 const yargs = require('yargs/yargs');
 const { hideBin } = require('yargs/helpers');
 
+const opt = require('src/options');
+
 // pre-commit try-repo /path/to/cloned/pre-commit-json-sort json-sort
 
 // TODO: Create options based on parameters and .editorconfig.
@@ -37,24 +39,31 @@ const { hideBin } = require('yargs/helpers');
  */
 async function main() {
   const argv = await yargs(hideBin(process.argv))
-    .option('indent', {
-      type: 'string',
-      description: 'Number of spaces to indent, or a string to use as the indent. Defaults to 2 spaces. Overrides .editorconfig settings if an .editorconfig is found.'
-    })
     .option('autofix', {
       type: 'boolean',
       description: 'Update files with fixes instead of just reporting. Defaults to reporting only.',
       default: false
     })
-    .option('final-newline', {
+    .option('indent-size', {
+      type: 'string',
+      description: 'Number of spaces to indent, or the string "tab" to use tabs. Defaults to 2 spaces. Overrides .editorconfig settings if an .editorconfig is found.'
+    })
+    .option('indent-style', {
+      type: 'string',
+      description: '`tab` or `space`. Defaults to `space`. Overrides .editorconfig settings if an .editorconfig is found.'
+    })
+    .option('insert-final-newline', {
       type: 'boolean',
       description: 'Insert a final newline after the sort. Overrides .editorconfig settings if an .editorconfig is found.'
     })
     .parseAsync();
 
-  console.log(`indent = ${argv.indent}`);
   console.log(`autofix = ${argv.autofix}`);
-  console.log(`final-newline = ${argv.finalNewline}`);
+
+  const overrides = opt.createOverrides(argv);
+  console.log(`indent-size = ${overrides.indent_size}`);
+  console.log(`indent-style = ${overrides.indent_stye}`);
+  console.log(`insert-final-newline = ${overrides.insert_final_newline}`);
 
   // _ is automatically set to the list of JSON files by pre-commit. We don't have to manage that ourselves.
   console.log(`_ = ${argv._}`);
