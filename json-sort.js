@@ -8,7 +8,7 @@ const process = require('node:process');
 const yargs = require('yargs/yargs');
 const { hideBin } = require('yargs/helpers');
 
-const opt = require('src/options');
+const opt = require('./src/options');
 
 // pre-commit try-repo /path/to/cloned/pre-commit-json-sort json-sort
 
