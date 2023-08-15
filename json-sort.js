@@ -62,7 +62,7 @@ async function main() {
 
   const overrides = opt.createOverrides(argv);
   console.log(`indent-size = ${overrides.indent_size}`);
-  console.log(`indent-style = ${overrides.indent_stye}`);
+  console.log(`indent-style = ${overrides.indent_style}`);
   console.log(`insert-final-newline = ${overrides.insert_final_newline}`);
 
   // _ is automatically set to the list of JSON files by pre-commit. We don't have to manage that ourselves.
