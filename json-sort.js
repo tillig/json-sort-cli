@@ -2,43 +2,75 @@
 
 'use strict';
 
+const fs = require('fs').promises;
+const os = require('os');
+const path = require('path');
 const process = require('node:process');
-// const json5 = require('json5');
-// const stringify = require('json-stable-stringify');
 const yargs = require('yargs/yargs');
 const { hideBin } = require('yargs/helpers');
 
 const opt = require('./src/options');
+const formatter = require('./src/formatter');
 
-// pre-commit try-repo /path/to/cloned/pre-commit-json-sort json-sort
+/**
+ * The exit code that will be used on program end.
+ */
+let exitCode = 0;
 
-// TODO: Create options based on parameters and .editorconfig.
-// TODO: Override indent based on .editorconfig.
-// TODO: Override newline at end of file based on .editorconfig.
-/*
-  try {
-    sorted = stringify(json5.parse(original), opts);
-    success = true;
-  } catch (e) {
-    let error = '[unknown error]';
-    if (typeof e === 'string') {
-      error = e;
-    } else if (e instanceof Error) {
-      error = e.message;
-    }
-
-    const message = 'Error doing stable stringify of the JSON content which starts at line ' + start.line + ', char ' + start.character + '.';
-    console.error('Sort errors usually are from malformed JSON - missing comma, extra comma, etc.');
-    console.error(message);
-    console.error(e);
-  }
-*/
+// TODO: Accept/expand globs so CLI support works better.
+// TODO: Compare original file to new contents - log if there are differences, update contents if autofix is enabled.
+// TODO: If there were any diffs/changes, exit 1.
 
 /**
  * Primary entry point for the hook.
  */
 async function main() {
-  const argv = await yargs(hideBin(process.argv))
+  const argv = await parseArguments();
+
+  if (argv.autofix) {
+    console.log('Autofix is ENABLED.');
+  }
+
+  const overrides = opt.createOverrides(argv);
+  const tempDirectory = await fs.mkdtemp(path.join(os.tmpdir(), 'json-sort'));
+  for (const file of argv._) {
+    console.log(`File: ${file}`);
+
+    let format;
+    try {
+      format = await opt.createFormatOptions(file, overrides);
+    } catch (e) {
+      writeError(`Error generating format options for file ${file}.`, e);
+      continue;
+    }
+
+    let formattedFile;
+    try {
+      formattedFile = await formatter.createFormattedFile(file, format, tempDirectory);
+      if (!formattedFile) {
+        writeError(`Unable to create formatted file for ${file}. Does ${file} exist?`);
+        continue;
+      }
+    } catch (e) {
+      writeError(`Error creating formatted file for ${file}. Most formatting errors are due to malformed JSON - missing comma, extra comma, etc.`, e);
+      continue;
+    }
+
+    const updatedContents = await fs.readFile(formattedFile, 'utf8');
+    console.log('Updated contents:');
+    console.log(updatedContents);
+  }
+
+  await fs.rm(tempDirectory, { recursive: true, force: true });
+}
+
+/**
+ * Parses the command line arguments into a structure we can use.
+ * @returns {object} The parsed arguments from yargs.
+ */
+async function parseArguments() {
+  return await yargs(hideBin(process.argv))
+    .usage('Usage: $0 <file.json> [options]')
     .option('autofix', {
       type: 'boolean',
       description: 'Update files with fixes instead of just reporting. Defaults to reporting only.',
@@ -56,20 +88,28 @@ async function main() {
       type: 'boolean',
       description: 'Insert a final newline after the sort. Overrides .editorconfig settings if an .editorconfig is found.'
     })
+    .check((argv, _) => {
+      if (argv._.length === 0) {
+        throw new Error('You must provide at least one file path to sort.');
+      } else {
+        return true;
+      }
+    })
+    .showHelpOnFail(true)
     .parseAsync();
+}
 
-  console.log(`autofix = ${argv.autofix}`);
-
-  const overrides = opt.createOverrides(argv);
-
-  // _ is automatically set to the list of JSON files by pre-commit. We don't have to manage that ourselves.
-  for (const file of argv._) {
-    const format = await opt.createFormatOptions(file, overrides);
-    console.log(`file = ${file}`);
-    console.log(`indent-size = ${format.indent_size}`);
-    console.log(`indent-style = ${format.indent_style}`);
-    console.log(`insert-final-newline = ${format.insert_final_newline}`);
+/**
+ * Writes an error to the console and sets the program to exit with a non-zero code.
+ * @param {string} message The message to write to the console.
+ * @param {Error} error The error structure, if any, to provide additional information.
+ */
+function writeError(message, error) {
+  exitCode = 1;
+  console.error(message);
+  if (error) {
+    console.error(error);
   }
 }
 
-main().then(() => process.exit(0));
+main().then(() => process.exit(exitCode));

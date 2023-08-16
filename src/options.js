@@ -8,8 +8,8 @@ const editorconfig = require('editorconfig');
 const cache = new Map();
 
 /**
- * Creates a JSON stable stringify option set based on the formatting options
- * defined in .editorconfig combined with defaults.
+ * Creates an option set including the  JSON stable stringify options based on
+ * the formatting options defined in .editorconfig combined with defaults.
  * @param {string} filePath The target file to format, relative to process.cwd().
  * @param {editorconfig.KnownProps} overrides The arguments provided to the plugin to override .editorconfig.
  * @returns {editorconfig.KnownProps} A combined set of formatting options that can be used in JSON stable stringify.
