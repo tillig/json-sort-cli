@@ -11,6 +11,7 @@ const { hideBin } = require('yargs/helpers');
 
 const opt = require('./src/options');
 const formatter = require('./src/formatter');
+const fileHash = require('./src/file-hash');
 
 /**
  * The exit code that will be used on program end.
@@ -18,19 +19,13 @@ const formatter = require('./src/formatter');
 let exitCode = 0;
 
 // TODO: Accept/expand globs so CLI support works better.
-// TODO: Compare original file to new contents - log if there are differences, update contents if autofix is enabled.
-// TODO: If there were any diffs/changes, exit 1.
+// TODO: Look at other pre-commit plugins to see what they log.
 
 /**
  * Primary entry point for the hook.
  */
 async function main() {
   const argv = await parseArguments();
-
-  if (argv.autofix) {
-    console.log('Autofix is ENABLED.');
-  }
-
   const overrides = opt.createOverrides(argv);
   const tempDirectory = await fs.mkdtemp(path.join(os.tmpdir(), 'json-sort'));
   for (const file of argv._) {
@@ -56,9 +51,22 @@ async function main() {
       continue;
     }
 
-    const updatedContents = await fs.readFile(formattedFile, 'utf8');
-    console.log('Updated contents:');
-    console.log(updatedContents);
+    const originalHash = await fileHash.create(file);
+    const formattedHash = await fileHash.create(formattedFile);
+    if (originalHash !== formattedHash) {
+      exitCode = 1;
+      if (argv.autofix) {
+        console.error(`Updating ${file} with sorted contents.`);
+        try {
+          await fs.cp(formattedFile, file, { force: true });
+        } catch (e) {
+          writeError(`Error copying sorted data to autofix ${file}.`, e);
+          continue;
+        }
+      } else {
+        console.error(`File ${file} is not properly sorted.`);
+      }
+    }
   }
 
   await fs.rm(tempDirectory, { recursive: true, force: true });
