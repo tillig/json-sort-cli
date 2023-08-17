@@ -24,7 +24,7 @@
   "homepage": "https://github.com/tillig/json-sort-cli#readme",
   "license": "MIT",
   "main": "json-sort.js",
-  "name": "json-sort-cli",
+  "name": "@tillig/json-sort-cli",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tillig/json-sort-cli.git"
