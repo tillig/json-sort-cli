@@ -96,6 +96,7 @@ async function parseArguments() {
       type: 'boolean',
       description: 'Insert a final newline after the sort. Overrides .editorconfig settings if an .editorconfig is found.'
     })
+    // TODO: Add `end-of-line` option.
     .check((argv, _) => {
       if (argv._.length === 0) {
         throw new Error('You must provide at least one file path to sort.');

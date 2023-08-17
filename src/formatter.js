@@ -22,10 +22,14 @@ exports.createFormattedFile = async function (originalPath, formatOptions, tempD
   const charset = formatOptions.charset ?? 'utf8';
   const originalContents = await fs.readFile(originalPath, charset);
   let sortedContents = formatJson(originalContents, formatOptions.stringify_options);
+  // TODO: Replace all newlines with specified newline types.
   if (formatOptions.insert_final_newline) {
     switch (formatOptions.end_of_line) {
       case 'lf':
         sortedContents += '\n';
+        break;
+      case 'cr':
+        sortedContents += '\r';
         break;
       case 'crlf':
         sortedContents += '\r\n';
