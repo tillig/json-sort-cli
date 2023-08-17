@@ -4,7 +4,7 @@
     "json-sort": "json-sort.js"
   },
   "bugs": {
-    "url": "https://github.com/tillig/pre-commit-json-sort/issues"
+    "url": "https://github.com/tillig/json-sort-cli/issues"
   },
   "dependencies": {
     "editorconfig": "^2.0.0",
@@ -12,7 +12,7 @@
     "json5": "^2.2.3",
     "yargs": "^17.7.2"
   },
-  "description": "Runs JSON stable sort on specified files as a pre-commit hook.",
+  "description": "CLI interface to json-stable-stringify that can also be used as a pre-commit hook.",
   "devDependencies": {
     "eslint": "^8.47.0",
     "eslint-config-google": "^0.14.0",
@@ -21,13 +21,13 @@
     "mocha": "^10.2.0",
     "npm-run-all": "^4.1.5"
   },
-  "homepage": "https://github.com/tillig/pre-commit-json-sort#readme",
+  "homepage": "https://github.com/tillig/json-sort-cli#readme",
   "license": "MIT",
   "main": "json-sort.js",
-  "name": "pre-commit-json-sort",
+  "name": "json-sort-cli",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tillig/pre-commit-json-sort.git"
+    "url": "git+https://github.com/tillig/json-sort-cli.git"
   },
   "scripts": {
     "build": "run-s lint test",
