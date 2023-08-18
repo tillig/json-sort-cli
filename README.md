@@ -22,7 +22,7 @@ The default formatting for `json-sort` is:
 
 - Two-spaces for indents.
 - System newline for line endings.
-- Insert final newline at the end of the content.
+- No final newline at the end of the content.
 
 `json-sort` will obey [`.editorconfig` settings](https://editorconfig.org/) in your repo. A sample `.editorconfig` might look like this:
 

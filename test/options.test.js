@@ -48,9 +48,6 @@ describe('createFormatOptions', () => {
 
   it('allows for defaults to work', async () => {
     const overrides = {
-      indent_size: undefined,
-      indent_style: undefined,
-      insert_final_newline: undefined
     };
     // This will try getting an .editorconfig from the root of the drive, which
     // we assume will not have one. Really hope no one is putting .editorconfig
@@ -58,7 +55,7 @@ describe('createFormatOptions', () => {
     const options = await opt.createFormatOptions('/test.no-editorconfig', overrides);
 
     assert.strictEqual(2, options.indent_size);
-    assert.strictEqual(true, options.insert_final_newline);
+    assert.strictEqual(false, options.insert_final_newline);
     assert.strictEqual('space', options.indent_style);
   });
 
