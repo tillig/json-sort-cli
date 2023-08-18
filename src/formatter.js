@@ -21,14 +21,7 @@ exports.createFormattedFile = async function (originalPath, formatOptions, tempD
 
   const charset = formatOptions.charset ?? 'utf8';
   const originalContents = await fs.readFile(originalPath, charset);
-  let sortedContents = formatJson(originalContents, formatOptions.stringify_options);
-
-  // json-stable-stringify always uses \n.
-  sortedContents.replace('\n', formatOptions.line_end_string);
-  if (formatOptions.insert_final_newline) {
-    sortedContents += formatOptions.line_end_string;
-  }
-
+  const sortedContents = exports.formatJson(originalContents, formatOptions);
   const guid = crypto.randomBytes(16).toString('hex');
   const tempFile = path.join(tempDirectory, guid);
   await fs.writeFile(tempFile, sortedContents, { encoding: charset });
@@ -37,12 +30,18 @@ exports.createFormattedFile = async function (originalPath, formatOptions, tempD
 
 /**
  * Format a JSON string using specified options.
- * @param {string} originalContents The original JSON content to format.
- * @param {import('../types/options').JsonStringifyOptions} formatOptions Formatting options for json-stable-stringify.
+ * @param {string} originalContents The original JSON content string to format.
+ * @param {import('../types/options').FormattingOptions} formatOptions Formatting options.
  * @returns {string} The formatted/sorted JSON content.
  */
-function formatJson(originalContents, formatOptions) {
-  return stringify(json5.parse(originalContents), formatOptions);
-}
+exports.formatJson = function (originalContents, formatOptions) {
+  let sortedContents = stringify(json5.parse(originalContents), formatOptions.stringify_options);
 
-exports.formatJson = formatJson;
+  // json-stable-stringify always uses \n.
+  sortedContents.replace('\n', formatOptions.line_end_string);
+  if (formatOptions.insert_final_newline) {
+    sortedContents += formatOptions.line_end_string;
+  }
+
+  return sortedContents;
+};
