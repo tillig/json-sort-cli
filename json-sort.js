@@ -26,45 +26,45 @@ let exitCode = 0;
  */
 async function main() {
   const argv = await parseArguments();
-  const overrides = opt.createOverrides(argv);
+  const argvOptions = opt.createOptionsFromArguments(argv);
   const tempDirectory = await fs.mkdtemp(path.join(os.tmpdir(), 'json-sort'));
-  for (const file of argv._) {
-    console.log(`File: ${file}`);
+  for (const originalFilePath of argv._) {
+    console.log(`File: ${originalFilePath}`);
 
     let format;
     try {
-      format = await opt.createFormatOptions(file, overrides);
+      format = await opt.createFormatOptions(originalFilePath, argvOptions);
     } catch (e) {
-      writeError(`Error generating format options for file ${file}.`, e);
+      writeError(`Error generating format options for file ${originalFilePath}.`, e);
       continue;
     }
 
-    let formattedFile;
+    let formattedFilePath;
     try {
-      formattedFile = await formatter.createFormattedFile(file, format, tempDirectory);
-      if (!formattedFile) {
-        writeError(`Unable to create formatted file for ${file}. Does ${file} exist?`);
+      formattedFilePath = await formatter.createFormattedFile(originalFilePath, format, tempDirectory);
+      if (!formattedFilePath) {
+        writeError(`Unable to create formatted file for ${originalFilePath}. Does ${originalFilePath} exist?`);
         continue;
       }
     } catch (e) {
-      writeError(`Error creating formatted file for ${file}. Most formatting errors are due to malformed JSON - missing comma, extra comma, etc.`, e);
+      writeError(`Error creating formatted file for ${originalFilePath}. Most formatting errors are due to malformed JSON - missing comma, extra comma, etc.`, e);
       continue;
     }
 
-    const originalHash = await fileHash.create(file);
-    const formattedHash = await fileHash.create(formattedFile);
+    const originalHash = await fileHash.create(originalFilePath);
+    const formattedHash = await fileHash.create(formattedFilePath);
     if (originalHash !== formattedHash) {
       exitCode = 1;
       if (argv.autofix) {
-        console.error(`Updating ${file} with sorted contents.`);
+        console.error(`Updating ${originalFilePath} with sorted contents.`);
         try {
-          await fs.cp(formattedFile, file, { force: true });
+          await fs.cp(formattedFilePath, originalFilePath, { force: true });
         } catch (e) {
-          writeError(`Error copying sorted data to autofix ${file}.`, e);
+          writeError(`Error copying sorted data to autofix ${originalFilePath}.`, e);
           continue;
         }
       } else {
-        console.error(`File ${file} is not properly sorted.`);
+        console.error(`File ${originalFilePath} is not properly sorted.`);
       }
     }
   }
@@ -89,14 +89,21 @@ async function parseArguments() {
       description: 'Number of spaces to indent, or the string "tab" to use tabs. Defaults to 2 spaces. Overrides .editorconfig settings if an .editorconfig is found.'
     })
     .option('indent-style', {
+      choices: ['space', 'tab'],
       type: 'string',
       description: '`tab` or `space`. Defaults to `space`. Overrides .editorconfig settings if an .editorconfig is found.'
     })
     .option('insert-final-newline', {
-      type: 'boolean',
-      description: 'Insert a final newline after the sort. Overrides .editorconfig settings if an .editorconfig is found.'
+      // This is a choice rather than a Boolean so we can differentiate between true, false, and "not specified."
+      choices: ['true', 'false'],
+      type: 'string',
+      description: 'Insert a final newline after the sort. Defaults to false. Overrides .editorconfig settings if an .editorconfig is found.'
     })
-    // TODO: Add `end-of-line` option.
+    .option('end-of-line', {
+      choices: ['lf', 'crlf', 'cr', 'unset'],
+      type: 'string',
+      description: 'Specify the desired line ending for output. Defaults to system line ending. Overrides .editorconfig settings if an .editorconfig is found.'
+    })
     .check((argv, _) => {
       if (argv._.length === 0) {
         throw new Error('You must provide at least one file path to sort.');
