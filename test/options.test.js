@@ -1,16 +1,18 @@
 const assert = require('assert');
 const opt = require('../src/options');
 
+// If you provide a filename that appears relative to the repo (like
+// 'test.json') you will get the repo .editorconfig included in the options!
 describe('createFormatOptions', () => {
   it('finds nested .editorconfig files', async () => {
     const options = await opt.createFormatOptions('test/nested-editorconfig/test.json');
 
     // This one comes from the nested config.
-    assert.strictEqual(4, options.indent_size);
+    assert.strictEqual(options.indent_size, 4);
 
     // These are at the repo root config.
-    assert.strictEqual(true, options.insert_final_newline);
-    assert.strictEqual('space', options.indent_style);
+    assert.strictEqual(options.insert_final_newline, true);
+    assert.strictEqual(options.indent_style, 'space');
   });
 
   it('allows override for indent size', async () => {
@@ -19,9 +21,9 @@ describe('createFormatOptions', () => {
     };
     const options = await opt.createFormatOptions('test.json', overrides);
 
-    assert.strictEqual(6, options.indent_size);
-    assert.strictEqual(true, options.insert_final_newline);
-    assert.strictEqual('space', options.indent_style);
+    assert.strictEqual(options.indent_size, 6);
+    assert.strictEqual(options.insert_final_newline, true);
+    assert.strictEqual(options.indent_style, 'space');
   });
 
   it('allows override for indent style', async () => {
@@ -30,9 +32,9 @@ describe('createFormatOptions', () => {
     };
     const options = await opt.createFormatOptions('test.json', overrides);
 
-    assert.strictEqual(2, options.indent_size);
-    assert.strictEqual(true, options.insert_final_newline);
-    assert.strictEqual('tab', options.indent_style);
+    assert.strictEqual(options.indent_size, 2);
+    assert.strictEqual(options.insert_final_newline, true);
+    assert.strictEqual(options.indent_style, 'tab');
   });
 
   it('allows override for final newline', async () => {
@@ -41,9 +43,9 @@ describe('createFormatOptions', () => {
     };
     const options = await opt.createFormatOptions('test.json', overrides);
 
-    assert.strictEqual(2, options.indent_size);
-    assert.strictEqual(false, options.insert_final_newline);
-    assert.strictEqual('space', options.indent_style);
+    assert.strictEqual(options.indent_size, 2);
+    assert.strictEqual(options.insert_final_newline, false);
+    assert.strictEqual(options.indent_style, 'space');
   });
 
   it('allows for defaults to work', async () => {
@@ -54,9 +56,9 @@ describe('createFormatOptions', () => {
     // right at the root of their machine.
     const options = await opt.createFormatOptions('/test.no-editorconfig', overrides);
 
-    assert.strictEqual(2, options.indent_size);
-    assert.strictEqual(false, options.insert_final_newline);
-    assert.strictEqual('space', options.indent_style);
+    assert.strictEqual(options.indent_size, 2);
+    assert.strictEqual(options.insert_final_newline, false);
+    assert.strictEqual(options.indent_style, 'space');
   });
 
   it('calculates stringify options for tabs', async () => {
@@ -66,7 +68,7 @@ describe('createFormatOptions', () => {
     };
     const options = await opt.createFormatOptions('test.json', overrides);
 
-    assert.strictEqual('\t', options.stringify_options.space);
+    assert.strictEqual(options.stringify_options.space, '\t');
   });
 
   it('calculates stringify options for spaces', async () => {
@@ -76,6 +78,6 @@ describe('createFormatOptions', () => {
     };
     const options = await opt.createFormatOptions('test.json', overrides);
 
-    assert.strictEqual(4, options.stringify_options.space);
+    assert.strictEqual(options.stringify_options.space, 4);
   });
 });

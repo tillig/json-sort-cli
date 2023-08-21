@@ -41,8 +41,12 @@ exports.formatJson = function (originalContents, formatOptions) {
   let sortedContents = stringify(json5.parse(originalContents), formatOptions.stringify_options);
 
   // json-stable-stringify always uses \n.
-  sortedContents.replace('\n', formatOptions.line_end_string);
-  if (formatOptions.insert_final_newline) {
+  if (formatOptions.line_end_string !== '\n') {
+    sortedContents = sortedContents.replace(/\n/g, formatOptions.line_end_string);
+  }
+
+  // It could come in from .editorconfig as explicitly unset.
+  if (formatOptions.insert_final_newline && (formatOptions.insert_final_newline !== 'unset')) {
     sortedContents += formatOptions.line_end_string;
   }
 
