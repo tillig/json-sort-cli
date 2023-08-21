@@ -37,3 +37,11 @@ You can test the pre-commit hook using [the `pre-commit try-repo` command](https
 3. While in the other repo, run `pre-commit try-repo ~/dev/json-sort-cli json-sort` to try out the hook. You can pass parameters at the end of the line. For example, `pre-commit try-repo ~/dev/json-sort-cli json-sort --verbose` turns on verbose output so you'll see the hook logs even if it passes.
 
 [You can't pass arguments to `try-repo`.](https://github.com/pre-commit/pre-commit/issues/850) You'd need to actually set up a separate pre-commit hook configuration pointed to your local clone at a specific commit hash.
+
+## Creating a New Release
+
+GitHub Actions is set up to take care of the publishing side of things when a new release is published to GitHub.
+
+- Update the version in `package.json`.
+- Tag the repo.
+- Create the release in GitHub and publish the release.
