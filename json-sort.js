@@ -7,6 +7,7 @@ const os = require('os');
 const path = require('path');
 const process = require('node:process');
 const yargs = require('yargs/yargs');
+const { glob } = require('glob');
 const { hideBin } = require('yargs/helpers');
 
 const opt = require('./src/options');
@@ -18,7 +19,6 @@ const fileHash = require('./src/file-hash');
  */
 let exitCode = 0;
 
-// TODO: Accept/expand globs so CLI support works better.
 // TODO: Look at other pre-commit plugins to see what they log.
 
 /**
@@ -28,12 +28,14 @@ async function main() {
   const argv = await parseArguments();
   const argvOptions = opt.createOptionsFromArguments(argv);
   const tempDirectory = await fs.mkdtemp(path.join(os.tmpdir(), 'json-sort'));
-  for (const originalFilePath of argv._) {
+  const filesToProcess = await expandGlobs(argv._);
+
+  for (const originalFilePath of filesToProcess) {
     console.log(`File: ${originalFilePath}`);
 
-    let format;
+    let formatOptions;
     try {
-      format = await opt.createFormatOptions(originalFilePath, argvOptions);
+      formatOptions = await opt.createFormatOptions(originalFilePath, argvOptions);
     } catch (e) {
       writeError(`Error generating format options for file ${originalFilePath}.`, e);
       continue;
@@ -41,7 +43,7 @@ async function main() {
 
     let formattedFilePath;
     try {
-      formattedFilePath = await formatter.createFormattedFile(originalFilePath, format, tempDirectory);
+      formattedFilePath = await formatter.createFormattedFile(originalFilePath, formatOptions, tempDirectory);
       if (!formattedFilePath) {
         writeError(`Unable to create formatted file for ${originalFilePath}. Does ${originalFilePath} exist?`);
         continue;
@@ -70,6 +72,21 @@ async function main() {
   }
 
   await fs.rm(tempDirectory, { recursive: true, force: true });
+}
+
+/**
+ * Expands the file arguments like globs into the set of files to format.
+ * @param {any} argvUnderscore The `argv._` argument with the set of files/globs to expand.
+ * @returns {string[]} An array of paths to files based on expanding the provided globs.
+ */
+async function expandGlobs(argvUnderscore) {
+  let expanded = [];
+  for (const globToProcess of argvUnderscore) {
+    const globProcessed = await glob(globToProcess);
+    expanded = expanded.concat(globProcessed);
+  }
+
+  return expanded;
 }
 
 /**
