@@ -10,9 +10,12 @@ const { EOL } = require('os');
 /**
  * Creates a temporary file with the formatted version of an original JSON file.
  * @param {string} originalPath The path to the original JSON file to format.
- * @param {import('../types/options').FormattingOptions} formatOptions Formatting options.
- * @param {string} tempDirectory Path to the temporary folder where formatted files should go.
- * @returns {string|null} The path to the temporary file that has the sorted JSON. If the original path doesn't exist, this will be null.
+ * @param {import('../types/options').FormattingOptions} formatOptions
+ * Formatting options.
+ * @param {string} tempDirectory Path to the temporary folder where formatted
+ * files should go.
+ * @returns {string|null} The path to the temporary file that has the sorted
+ * JSON. If the original path doesn't exist, this will be null.
  */
 exports.createFormattedFile = async function (originalPath, formatOptions, tempDirectory) {
   if (!fsSync.existsSync(originalPath)) {

@@ -11,9 +11,12 @@ const cache = new Map();
 /**
  * Creates an option set including the  JSON stable stringify options based on
  * the formatting options defined in .editorconfig combined with defaults.
- * @param {string} filePath The target file to format, relative to process.cwd().
- * @param {editorconfig.KnownProps} argvOptions The arguments provided to the plugin to override .editorconfig.
- * @returns {import('../types/options').FormattingOptions} A combined set of formatting options that can be used in JSON stable stringify.
+ * @param {string} filePath The target file to format, relative to
+ * process.cwd().
+ * @param {editorconfig.KnownProps} argvOptions The arguments provided to the
+ * plugin to override .editorconfig.
+ * @returns {import('../types/options').FormattingOptions} A combined set of
+ * formatting options that can be used in JSON stable stringify.
  */
 exports.createFormatOptions = async function (filePath, argvOptions) {
   argvOptions = argvOptions || {};
@@ -51,9 +54,11 @@ exports.createFormatOptions = async function (filePath, argvOptions) {
 };
 
 /**
- * Converts the parsed arguments for the command into a set of formatting override options.
+ * Converts the parsed arguments for the command into a set of formatting
+ * override options.
  * @param {object} argv The parsed command line arguments.
- * @returns {editorconfig.KnownProps} The arguments converted into .editorconfig override format.
+ * @returns {editorconfig.KnownProps} The arguments converted into .editorconfig
+ * override format.
  */
 exports.createOptionsFromArguments = function (argv) {
   const options = {

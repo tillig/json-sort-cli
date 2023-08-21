@@ -19,20 +19,16 @@ const fileHash = require('./src/file-hash');
  */
 let exitCode = 0;
 
-// TODO: Look at other pre-commit plugins to see what they log.
-
 /**
  * Primary entry point for the hook.
  */
 async function main() {
-  const argv = await parseArguments();
+  const argv = await parseArguments(process.argv);
   const argvOptions = opt.createOptionsFromArguments(argv);
   const tempDirectory = await fs.mkdtemp(path.join(os.tmpdir(), 'json-sort'));
   const filesToProcess = await expandGlobs(argv._);
 
   for (const originalFilePath of filesToProcess) {
-    console.log(`File: ${originalFilePath}`);
-
     let formatOptions;
     try {
       formatOptions = await opt.createFormatOptions(originalFilePath, argvOptions);
@@ -58,7 +54,7 @@ async function main() {
     if (originalHash !== formattedHash) {
       exitCode = 1;
       if (argv.autofix) {
-        console.error(`Updating ${originalFilePath} with sorted contents.`);
+        console.error(`Updating file ${originalFilePath}.`);
         try {
           await fs.cp(formattedFilePath, originalFilePath, { force: true });
         } catch (e) {
@@ -66,7 +62,7 @@ async function main() {
           continue;
         }
       } else {
-        console.error(`File ${originalFilePath} is not properly sorted.`);
+        console.error(`${originalFilePath} is not properly sorted.`);
       }
     }
   }
@@ -75,9 +71,12 @@ async function main() {
 }
 
 /**
- * Expands the file arguments like globs into the set of files to format.
- * @param {any} argvUnderscore The `argv._` argument with the set of files/globs to expand.
- * @returns {string[]} An array of paths to files based on expanding the provided globs.
+ * Expands the file arguments like globs into the set of files to format. This
+ * also filters out files that were specified but don't exist.
+ * @param {any} argvUnderscore The `argv._` argument with the set of files/globs
+ * to expand.
+ * @returns {string[]} An array of paths to files based on expanding the
+ * provided globs.
  */
 async function expandGlobs(argvUnderscore) {
   let expanded = [];
@@ -91,10 +90,11 @@ async function expandGlobs(argvUnderscore) {
 
 /**
  * Parses the command line arguments into a structure we can use.
+ * @param {string[]} argumentsToParse `process.argv` - the arguments to parse.
  * @returns {object} The parsed arguments from yargs.
  */
-async function parseArguments() {
-  return await yargs(hideBin(process.argv))
+async function parseArguments(argumentsToParse) {
+  return await yargs(hideBin(argumentsToParse))
     .usage('Usage: $0 <file.json> [options]')
     .option('autofix', {
       type: 'boolean',
@@ -111,7 +111,8 @@ async function parseArguments() {
       description: '`tab` or `space`. Defaults to `space`. Overrides .editorconfig settings if an .editorconfig is found.'
     })
     .option('insert-final-newline', {
-      // This is a choice rather than a Boolean so we can differentiate between true, false, and "not specified."
+      // This is a choice rather than a Boolean so we can differentiate between
+      // true, false, and "not specified."
       choices: ['true', 'false'],
       type: 'string',
       description: 'Insert a final newline after the sort. Defaults to false. Overrides .editorconfig settings if an .editorconfig is found.'
@@ -133,9 +134,11 @@ async function parseArguments() {
 }
 
 /**
- * Writes an error to the console and sets the program to exit with a non-zero code.
+ * Writes an error to the console and sets the program to exit with a non-zero
+ * code.
  * @param {string} message The message to write to the console.
- * @param {Error} error The error structure, if any, to provide additional information.
+ * @param {Error} error The error structure, if any, to provide additional
+ * information.
  */
 function writeError(message, error) {
   exitCode = 1;
