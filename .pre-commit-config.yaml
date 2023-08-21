@@ -1,0 +1,14 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: "f71fa2c1f9cf5cb705f73dffe4b21f7c61470ba9" # v4.4.0
+    hooks:
+      - id: check-yaml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: trailing-whitespace
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: "ce0d77ac47dc921b62429804fe763d4d35f66a76" # v0.34.0
+    hooks:
+      - id: markdownlint
+        args:
+          - --fix

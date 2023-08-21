@@ -2,10 +2,20 @@
 
 This is a command line interface to the [`json-stable-stringify`](https://github.com/ljharb/json-stable-stringify) library so you can format/sort JSON files using this algorithm. It also provides a [pre-commit hook](https://pre-commit.com) configuration.
 
-## Install as CLI
+## Use as CLI
 
 ```sh
+# Install
 npm install -g @tillig/json-sort-cli
+
+# See the options available
+json-sort --help
+
+# Check if files are sorted
+json-sort *.json --insert-final-newline true
+
+# Sort files if needed
+json-sort *.json --insert-final-newline true --autofix
 ```
 
 ## Use as Pre-Commit Hook
@@ -15,6 +25,28 @@ This is _similar to_ the [`pretty-format-json` hook](https://github.com/pre-comm
 - Uses [`json-stable-stringify`](https://github.com/ljharb/json-stable-stringify) as the algorithm for sorting and formatting (for example, empty arrays will be expanded to two lines).
 - Supports JSON with comments (but will _remove any comments_ on sort!).
 - Obeys `.editorconfig`, if present, for indents and line endings.
+
+For basic checking, your hook will look like this:
+
+```yaml
+repos:
+  - repo: https://github.com/tillig/json-sort-cli
+    rev: v1.0.0 # Use a version tag or SHA commit hash
+    hooks:
+      - id: json-sort
+```
+
+You can also pass arguments to control behavior, like auto-fixing any issues:
+
+```yaml
+repos:
+  - repo: https://github.com/tillig/json-sort-cli
+    rev: v1.0.0 # Use a version tag or SHA commit hash
+    hooks:
+      - id: json-sort
+        args:
+          - --autofix
+```
 
 ## Controlling Formatting
 
