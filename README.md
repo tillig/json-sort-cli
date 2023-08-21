@@ -1,6 +1,6 @@
 # JSON Stable Stringify CLI and Pre-Commit Hook
 
-This is a command line interface to the [`json-stable-stringify`](https://github.com/ljharb/json-stable-stringify) library so you can format/sort JSON files using this algorithm. It also provides a [pre-commit hook](https://pre-commit.com) configuration.
+This is a command line interface to the [`json-stable-stringify`](https://github.com/ljharb/json-stable-stringify) library so you can format/sort JSON files using that algorithm. It supports `.editorconfig` and provides a [pre-commit hook](https://pre-commit.com) configuration.
 
 ## Use as CLI
 
