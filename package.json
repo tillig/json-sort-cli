@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "editorconfig": "^2.0.0",
-    "glob": "^10.3.4",
+    "glob": "^10.3.7",
     "json-stable-stringify": "^1.0.2",
     "json5": "^2.2.3",
     "yargs": "^17.7.2"
