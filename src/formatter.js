@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const diff = require('diff');
 const editorconfig = require('editorconfig');
 const fs = require('fs').promises;
 const fsSync = require('fs');
@@ -51,4 +52,14 @@ exports.formatJson = function (originalContents, formatOptions) {
   }
 
   return sortedContents;
+};
+
+exports.isStructuralDifference = async function (originalPath, formattedPath) {
+  const originalContents = (await fs.readFile(originalPath)).toString();
+  const formattedContents = (await fs.readFile(formattedPath)).toString();
+  const diffResult = diff.diffTrimmedLines(originalContents, formattedContents);
+
+  // If the differences are structural we'll have results; if it's whitespace or
+  // file encoding we'll see nothing here.
+  return diffResult && diffResult.length && diffResult.find((dr) => dr.added || dr.removed);
 };

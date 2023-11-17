@@ -94,3 +94,5 @@ If `json-sort` detects any changes in content due to sorting, it will exit with 
 By default, the formatter is non-destructive - it will _warn you_ if the sorted content is different from the original content. This allows for easier integration with pre-commit hooks and build scripts where you don't want these things automatically changing content.
 
 If you want the formatter to overwrite the existing file with the sorted content, specify the `--autofix` argument.
+
+Console output from the command will tell you if the difference is _structural_ or _whitespace_. Since the sort command obeys `.editorconfig` there are sometimes non-obvious differences - file encoding, tabs vs. spaces, etc. The messages will tell you what the sort thinks needs changing.
