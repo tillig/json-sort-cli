@@ -10,7 +10,7 @@
     "diff": "^5.1.0",
     "editorconfig": "^2.0.0",
     "glob": "^10.3.10",
-    "json-stable-stringify": "^1.0.2",
+    "json-stable-stringify": "^1.1.0",
     "json5": "^2.2.3",
     "yargs": "^17.7.2"
   },
