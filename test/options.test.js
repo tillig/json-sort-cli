@@ -81,3 +81,59 @@ describe('createFormatOptions', () => {
     assert.strictEqual(options.stringify_options.space, 4);
   });
 });
+
+describe('createOptionsFromArguments', () => {
+  it('handles a tab being passed for indent size and style', async () => {
+    const parsedArgs = {
+      indentSize: 'tab',
+      indentStyle: 'tab'
+    };
+    const options = opt.createOptionsFromArguments(parsedArgs);
+    assert.strictEqual(options.end_of_line, undefined);
+    assert.strictEqual(options.insert_final_newline, undefined);
+    assert.strictEqual(options.indent_size, 1);
+    assert.strictEqual(options.indent_style, 'tab');
+  });
+
+  it('handles a tab being passed for indent style', async () => {
+    const parsedArgs = {
+      indentStyle: 'tab'
+    };
+    const options = opt.createOptionsFromArguments(parsedArgs);
+    assert.strictEqual(options.end_of_line, undefined);
+    assert.strictEqual(options.insert_final_newline, undefined);
+    assert.strictEqual(options.indent_size, 1);
+    assert.strictEqual(options.indent_style, 'tab');
+  });
+
+  it('handles a tab being passed for indent size', async () => {
+    const parsedArgs = {
+      indentSize: 'tab'
+    };
+    const options = opt.createOptionsFromArguments(parsedArgs);
+    assert.strictEqual(options.end_of_line, undefined);
+    assert.strictEqual(options.insert_final_newline, undefined);
+    assert.strictEqual(options.indent_size, 1);
+    assert.strictEqual(options.indent_style, 'tab');
+  });
+
+  it('handles a stringified number being passed for indent size', async () => {
+    const parsedArgs = {
+      indentSize: '4'
+    };
+    const options = opt.createOptionsFromArguments(parsedArgs);
+    assert.strictEqual(options.end_of_line, undefined);
+    assert.strictEqual(options.insert_final_newline, undefined);
+    assert.strictEqual(options.indent_size, 4);
+    assert.strictEqual(options.indent_style, 'space');
+  });
+
+  it('allows for no indent to be specified', async () => {
+    const parsedArgs = {};
+    const options = opt.createOptionsFromArguments(parsedArgs);
+    assert.strictEqual(options.end_of_line, undefined);
+    assert.strictEqual(options.insert_final_newline, undefined);
+    assert.strictEqual(options.indent_size, undefined);
+    assert.strictEqual(options.indent_style, undefined);
+  });
+});

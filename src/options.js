@@ -65,8 +65,16 @@ exports.createOptionsFromArguments = function (argv) {
     end_of_line: argv.endOfLine,
     indent_size: argv.indentSize,
     indent_style: argv.indentStyle,
-    insert_final_newline: argv.insertFinalNewline === undefined ? undefined : (argv.insertFinalNewline === 'true' )
+    insert_final_newline: argv.insertFinalNewline === undefined ? undefined : (argv.insertFinalNewline === 'true')
   };
+
+  if (options.indent_style === 'tab' || options.indent_size === 'tab') {
+    options.indent_size = 1;
+    options.indent_style = 'tab';
+  } else if (!isNaN(options.indent_size) && !isNaN(parseInt(options.indent_size))) {
+    options.indent_size = parseInt(options.indent_size);
+    options.indent_style = 'space';
+  }
 
   // Any properties not passed in should be removed so Object.assign can do its job later
   Object.keys(options).forEach(function (key) {
