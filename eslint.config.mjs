@@ -1,13 +1,12 @@
 import globals from 'globals';
 import googleRecommended from 'eslint-config-google';
 import jsdoc from 'eslint-plugin-jsdoc';
-// Use of mocha rules pending resolution of https://github.com/lo1tuma/eslint-plugin-mocha/issues/352
-// import mocha from 'eslint-plugin-mocha';
+import mocha from 'eslint-plugin-mocha';
 
 export default [
   googleRecommended,
   jsdoc.configs['flat/recommended'],
-  // mocha.configs.flat.recommended,
+  mocha.configs.flat.recommended,
   {
     ignores: ['node_modules/*'],
     languageOptions: {

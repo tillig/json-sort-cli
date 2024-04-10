@@ -1,8 +1,8 @@
 const assert = require('assert');
 const formatter = require('../src/formatter');
 
-describe('formatJson', () => {
-  it('handles JSON without comments', async () => {
+describe('formatJson', function () {
+  it('handles JSON without comments', async function () {
     const json = '{"test":"value"}';
     const options = {
       insert_final_newline: false,
@@ -16,7 +16,7 @@ describe('formatJson', () => {
     assert.strictEqual(actual, '{\n  "test": "value"\n}');
   });
 
-  it('handles JSON with comments but strips comments', async () => {
+  it('handles JSON with comments but strips comments', async function () {
     const json = `
     // This is a comment.
     { "test": "value" }`;
@@ -33,7 +33,7 @@ describe('formatJson', () => {
     assert.strictEqual(actual, '{\n  "test": "value"\n}');
   });
 
-  it('adds the trailing newline if directed', async () => {
+  it('adds the trailing newline if directed', async function () {
     const json = '{"test":"value"}';
     const options = {
       insert_final_newline: true,
@@ -47,7 +47,7 @@ describe('formatJson', () => {
     assert.strictEqual(actual, '{\n  "test": "value"\n}\n');
   });
 
-  it('obeys line endings', async () => {
+  it('obeys line endings', async function () {
     const json = '{"test":"value"}';
     const options = {
       insert_final_newline: true,
@@ -61,7 +61,7 @@ describe('formatJson', () => {
     assert.strictEqual(actual, '{\r\n  "test": "value"\r\n}\r\n');
   });
 
-  it('handles unset insert_final_newline', async () => {
+  it('handles unset insert_final_newline', async function () {
     const json = '{"test":"value"}';
     const options = {
       insert_final_newline: 'unset',
