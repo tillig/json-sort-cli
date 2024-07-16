@@ -9,7 +9,7 @@
   "dependencies": {
     "diff": "^5.2.0",
     "editorconfig": "^2.0.0",
-    "glob": "^10.4.3",
+    "glob": "^11.0.0",
     "json-stable-stringify": "^1.1.1",
     "json5": "^2.2.3",
     "yargs": "^17.7.2"
@@ -22,6 +22,9 @@
     "eslint-plugin-mocha": "^10.4.3",
     "mocha": "^10.6.0",
     "npm-run-all": "^4.1.5"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   },
   "homepage": "https://github.com/tillig/json-sort-cli#readme",
   "license": "MIT",
@@ -36,5 +39,5 @@
     "lint": "eslint .",
     "test": "mocha"
   },
-  "version": "1.1.1"
+  "version": "2.0.0"
 }

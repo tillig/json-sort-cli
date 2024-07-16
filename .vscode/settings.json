@@ -3,5 +3,5 @@
     "autofix",
     "jsdiff"
   ],
-  "eslint.experimental.useFlatConfig": true
+  "eslint.useFlatConfig": true
 }
