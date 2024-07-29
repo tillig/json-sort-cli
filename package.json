@@ -16,7 +16,7 @@
   },
   "description": "CLI interface to json-stable-stringify that can also be used as a pre-commit hook.",
   "devDependencies": {
-    "eslint": "^9.7.0",
+    "eslint": "^9.8.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-jsdoc": "^48.8.3",
     "eslint-plugin-mocha": "^10.4.3",
