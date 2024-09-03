@@ -7,7 +7,7 @@
     "url": "https://github.com/tillig/json-sort-cli/issues"
   },
   "dependencies": {
-    "diff": "^5.2.0",
+    "diff": "^6.0.0",
     "editorconfig": "^2.0.0",
     "glob": "^11.0.0",
     "json-stable-stringify": "^1.1.1",
@@ -20,8 +20,7 @@
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-jsdoc": "^50.2.2",
     "eslint-plugin-mocha": "^10.5.0",
-    "mocha": "^10.7.3",
-    "npm-run-all": "^4.1.5"
+    "mocha": "^10.7.3"
   },
   "engines": {
     "node": ">=20.0.0"
@@ -35,7 +34,7 @@
     "url": "git+https://github.com/tillig/json-sort-cli.git"
   },
   "scripts": {
-    "build": "run-s lint test",
+    "build": "npm run lint && npm run test",
     "lint": "eslint .",
     "test": "mocha"
   },
