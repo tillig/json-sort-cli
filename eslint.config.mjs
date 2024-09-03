@@ -43,6 +43,7 @@ export default [
           ignoredNodes: ['ConditionalExpression']
         }
       ],
+      'linebreak-style': 'off',
       'max-len': 'off',
       'no-invalid-this': 'off',
       'no-unused-vars': 'off',
