@@ -1,4 +1,5 @@
 .editorconfig
+.gitattributes
 .github/
 .markdownlint.json
 .pre-commit-config.yaml
