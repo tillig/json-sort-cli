@@ -1,0 +1,7 @@
+.editorconfig
+.github/
+.markdownlint.json
+.pre-commit-config.yaml
+.prettierrc
+.vscode/
+test/
