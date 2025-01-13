@@ -9,7 +9,7 @@
   "dependencies": {
     "diff": "^7.0.0",
     "editorconfig": "^2.0.0",
-    "glob": "^11.0.0",
+    "glob": "^11.0.1",
     "json-stable-stringify": "^1.2.1",
     "json5": "^2.2.3",
     "yargs": "^17.7.2"
