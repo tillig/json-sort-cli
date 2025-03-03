@@ -1,8 +1,7 @@
 - id: json-sort
   name: json sort
-  description: "JSON stable sort and format"
+  description: JSON stable sort and format
   entry: json-sort
   language: node
-  language_version: 20.18.0
   types: [json]
   minimum_pre_commit_version: 0.15.0
