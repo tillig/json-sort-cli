@@ -6,7 +6,7 @@ import mocha from 'eslint-plugin-mocha';
 export default [
   googleRecommended,
   jsdoc.configs['flat/recommended'],
-  mocha.configs.flat.recommended,
+  mocha.configs.recommended,
   {
     ignores: ['node_modules/*'],
     languageOptions: {
