@@ -53,9 +53,8 @@ async function main() {
     const formattedHash = await fileHash.create(formattedFilePath);
     if (originalHash !== formattedHash) {
       const isStructuralDifference = await formatter.isStructuralDifference(originalFilePath, formattedFilePath);
-      exitCode = 1;
       if (argv.autofix) {
-        console.error(`Updating file ${originalFilePath} (${isStructuralDifference ? 'structure' : 'whitespace'}).`);
+        console.log(`Updating file ${originalFilePath} (${isStructuralDifference ? 'structure' : 'whitespace'}).`);
         try {
           await fs.cp(formattedFilePath, originalFilePath, { force: true });
         } catch (e) {
@@ -63,6 +62,7 @@ async function main() {
           continue;
         }
       } else {
+        exitCode = 1;
         console.error(`${originalFilePath} is not properly sorted (${isStructuralDifference ? 'structure' : 'whitespace'}).`);
       }
     }
