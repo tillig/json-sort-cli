@@ -18,7 +18,7 @@
   "devDependencies": {
     "eslint": "^9.27.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-jsdoc": "^50.6.17",
+    "eslint-plugin-jsdoc": "^50.7.1",
     "eslint-plugin-mocha": "^11.1.0",
     "mocha": "^11.5.0"
   },
