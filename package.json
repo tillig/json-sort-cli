@@ -23,7 +23,7 @@
     "mocha": "^11.6.0"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22"
   },
   "homepage": "https://github.com/tillig/json-sort-cli#readme",
   "license": "MIT",
