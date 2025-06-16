@@ -1,8 +1,8 @@
 {
   "recommendations": [
     "davidanson.vscode-markdownlint",
+    "dnut.rewrap-revived",
     "editorconfig.editorconfig",
-    "stkb.rewrap",
     "streetsidesoftware.code-spell-checker",
     "travisillig.vscode-json-stable-stringify"
   ]
