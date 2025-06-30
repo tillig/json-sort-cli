@@ -48,6 +48,11 @@ export default [
       'no-invalid-this': 'off',
       'no-unused-vars': 'off',
       'object-curly-spacing': ['error', 'always'],
+      'operator-linebreak': [
+        'error',
+        'after',
+        { overrides: { '?': 'before', ':': 'before' } }
+      ],
       'require-jsdoc': 'off',
       'semi': 'error',
       'space-before-function-paren': [
