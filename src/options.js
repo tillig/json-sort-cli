@@ -25,14 +25,19 @@ exports.createFormatOptions = async function (filePath, argvOptions) {
   const config = await editorconfig.parse(filePath, { cache });
 
   // Defaults => editorconfig => manual overrides.
-  const merged = Object.assign({
-    indent_size: 2,
-    indent_style: 'space',
-    insert_final_newline: false
-  }, Object.assign(config, argvOptions));
+  const merged = Object.assign(
+    {
+      indent_size: 2,
+      indent_style: 'space',
+      insert_final_newline: false
+    },
+    Object.assign(config, argvOptions)
+  );
 
   // Now make _that_ into json-stable-stringify options and add that to the object.
-  merged.stringify_options = { space: merged.indent_style === 'tab' ? '\t' : merged.indent_size };
+  merged.stringify_options = {
+    space: merged.indent_style === 'tab' ? '\t' : merged.indent_size
+  };
 
   // Resolve the actual EOL.
   switch (merged.end_of_line) {
@@ -65,13 +70,19 @@ exports.createOptionsFromArguments = function (argv) {
     end_of_line: argv.endOfLine,
     indent_size: argv.indentSize,
     indent_style: argv.indentStyle,
-    insert_final_newline: argv.insertFinalNewline === undefined ? undefined : (argv.insertFinalNewline === 'true')
+    insert_final_newline:
+      argv.insertFinalNewline === undefined
+        ? undefined
+        : argv.insertFinalNewline === 'true'
   };
 
   if (options.indent_style === 'tab' || options.indent_size === 'tab') {
     options.indent_size = 1;
     options.indent_style = 'tab';
-  } else if (!isNaN(options.indent_size) && !isNaN(parseInt(options.indent_size))) {
+  } else if (
+    !isNaN(options.indent_size) &&
+    !isNaN(parseInt(options.indent_size))
+  ) {
     options.indent_size = parseInt(options.indent_size);
     options.indent_style = 'space';
   }
