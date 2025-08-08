@@ -2,6 +2,15 @@
 
 This is a command line interface to the [`json-stable-stringify`](https://github.com/ljharb/json-stable-stringify) library so you can format/sort JSON files using that algorithm. It supports `.editorconfig` and provides a [pre-commit hook](https://pre-commit.com) configuration.
 
+- [Use as CLI](#use-as-cli)
+- [Use as Pre-Commit Hook](#use-as-pre-commit-hook)
+- [Controlling Formatting](#controlling-formatting)
+- [Warn vs. Autofix](#warn-vs-autofix)
+- [Known Issues](#known-issues)
+  - [Comments Will Be Lost](#comments-will-be-lost)
+  - [Number Formats Will Be Lost](#number-formats-will-be-lost)
+  - [Non-Required Unicode Encoding Will Be Lost](#non-required-unicode-encoding-will-be-lost)
+
 ## Use as CLI
 
 ```sh
@@ -96,3 +105,61 @@ By default, the formatter is non-destructive - it will _warn you_ if the sorted 
 If you want the formatter to overwrite the existing file with the sorted content, specify the `--autofix` argument.
 
 Console output from the command will tell you if the difference is _structural_ or _whitespace_. Since the sort command obeys `.editorconfig` there are sometimes non-obvious differences - file encoding, tabs vs. spaces, etc. The messages will tell you what the sort thinks needs changing.
+
+## Known Issues
+
+Here are some things you'll discover on sorting JSON. (If you have a fix for these, [I'd love a PR.](https://github.com/tillig/json-sort-cli/pulls))
+
+### Comments Will Be Lost
+
+Technically JSON doesn't support comments. The parser uses the JSON5 reader to allow sorting JSON with comments, but the comments will be removed from the sorted output.
+
+### Number Formats Will Be Lost
+
+For example, if you have:
+
+```json
+{
+  "value": 5.551634280063769e-06
+}
+```
+
+The sorted version of that is:
+
+```json
+{
+  "value": 0.000005551634280063769
+}
+```
+
+This is all part of how [`JSON.stringify()` works](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) and is not within the control of the CLI or parsing libraries.
+
+### Non-Required Unicode Encoding Will Be Lost
+
+For example, if you have:
+
+```json
+{
+  "value": "Qu\u00e9bec"
+}
+```
+
+The sorted version of that is:
+
+```json
+{
+  "value": "Québec"
+}
+```
+
+The original `\u` encoding will not be retained. This is all part of how [`JSON.stringify()` works](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) and is not within the control of the CLI or parsing libraries.
+
+If you do have characters that require encoding, like this:
+
+```json
+{
+  "value": "data\ndata"
+}
+```
+
+That character _will remain encoded_ in the serialized output.
