@@ -3,5 +3,6 @@
     "autofix",
     "jsdiff"
   ],
-  "eslint.useFlatConfig": true
+  "eslint.useFlatConfig": true,
+  "markdown.extension.toc.levels": "2..6"
 }
