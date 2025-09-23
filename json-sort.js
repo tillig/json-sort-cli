@@ -71,6 +71,7 @@ async function main() {
   await fs.rm(tempDirectory, { recursive: true, force: true });
 }
 
+/* eslint-disable jsdoc/reject-any-type */
 /**
  * Expands the file arguments like globs into the set of files to format. This
  * also filters out files that were specified but don't exist.
@@ -88,6 +89,7 @@ async function expandGlobs(argvUnderscore) {
 
   return expanded;
 }
+/* eslint-enable jsdoc/reject-any-type */
 
 /**
  * Parses the command line arguments into a structure we can use.
