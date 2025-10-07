@@ -4,6 +4,7 @@ This is a command line interface to the [`json-stable-stringify`](https://github
 
 - [Use as CLI](#use-as-cli)
 - [Use as Pre-Commit Hook](#use-as-pre-commit-hook)
+- [VS Code Extension](#vs-code-extension)
 - [Controlling Formatting](#controlling-formatting)
 - [Warn vs. Autofix](#warn-vs-autofix)
 - [Known Issues](#known-issues)
@@ -56,6 +57,10 @@ repos:
         args:
           - --autofix
 ```
+
+## VS Code Extension
+
+There is [a VS Code extension that employs this same logic](https://github.com/tillig/vscode-json-stable-stringify) to help you format things proactively in your editor.
 
 ## Controlling Formatting
 
