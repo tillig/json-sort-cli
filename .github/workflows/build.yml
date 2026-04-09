@@ -17,7 +17,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 22.x
+          node-version: 22.22.1 # 22.x pinned to fix promise_retry package issue.
           registry-url: "https://registry.npmjs.org"
       - run: npm install -g npm
       - run: npm clean-install
