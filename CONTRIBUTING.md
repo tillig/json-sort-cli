@@ -2,7 +2,7 @@
 
 ## Tools
 
-- Node 18.x (check `.github/workflows/build.yml` to see what we're building with)
+- Node 22.x (check `.github/workflows/build.yml` to see what we're building with)
 - [pre-commit](https://pre-commit.com/)
 
 Once you clone the repo, run `pre-commit install` to connect the pre-commit hooks.
