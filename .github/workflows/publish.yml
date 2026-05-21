@@ -17,8 +17,7 @@ jobs:
         with:
           node-version: 22.22.1 # 22.x pinned to fix promise_retry package issue.
           registry-url: "https://registry.npmjs.org"
+          package-manager-cache: false
       - run: npm install -g npm
       - run: npm clean-install
       - run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
