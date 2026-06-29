@@ -20,7 +20,7 @@
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-jsdoc": "^63.0.7",
     "eslint-plugin-mocha": "^11.3.0",
-    "globals": "^17.6.0",
+    "globals": "^17.7.0",
     "mocha": "^11.7.6"
   },
   "engines": {
