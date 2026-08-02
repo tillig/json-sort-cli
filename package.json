@@ -35,9 +35,9 @@
     "url": "git+https://github.com/tillig/json-sort-cli.git"
   },
   "scripts": {
-    "build": "npm run lint && npm run test",
     "lint": "eslint .",
-    "test": "mocha"
+    "test": "mocha",
+    "verify": "npm run lint && npm run test"
   },
-  "version": "3.0.1"
+  "version": "3.0.2"
 }

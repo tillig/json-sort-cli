@@ -14,8 +14,10 @@ Once you clone the repo, run `pre-commit install` to connect the pre-commit hook
 npm install
 
 # Do the lint/test cycle.
-npm run build
+npm run verify
 ```
+
+The lint/test script is deliberately named `verify` rather than `build`. pre-commit installs this hook with `npm install -g git+file://<clone>`, and npm only prepares a git-sourced package (materializing it into `node_modules`) when the manifest has one of `build`, `prepare`, `prepack`, `install`, `preinstall`, or `postinstall`. With one of those present, npm instead symlinks the package into a temporary git clone that it then deletes, so the `json-sort` executable dangles and the hook fails with `Executable json-sort not found` unless the consumer sets `npm config set install-links true`. Avoid adding scripts with any of those names.
 
 ## Test
 

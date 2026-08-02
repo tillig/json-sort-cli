@@ -6,8 +6,8 @@
         "isDefault": true,
         "kind": "build"
       },
-      "label": "npm: build",
-      "script": "build",
+      "label": "npm: verify",
+      "script": "verify",
       "type": "npm"
     },
     {
