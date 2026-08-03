@@ -6,9 +6,12 @@ const fs = require('fs').promises;
 const os = require('os');
 const path = require('path');
 const process = require('node:process');
-const yargs = require('yargs/yargs');
 const { glob } = require('glob');
-const { hideBin } = require('yargs/helpers');
+
+// yargs 18 is ESM-only. `require()` of an ES module only works on Node 22.12.0
+// and later, so requiring it here would throw ERR_REQUIRE_ESM on earlier 22.x
+// releases even though package.json allows them. Load it with dynamic import()
+// instead, which works on every supported version.
 
 const opt = require('./src/options');
 const formatter = require('./src/formatter');
@@ -97,6 +100,9 @@ async function expandGlobs(argvUnderscore) {
  * @returns {object} The parsed arguments from yargs.
  */
 async function parseArguments(argumentsToParse) {
+  const { default: yargs } = await import('yargs/yargs');
+  const { hideBin } = await import('yargs/helpers');
+
   return await yargs(hideBin(argumentsToParse))
     .usage('Usage: $0 <file.json> [options]')
     .option('autofix', {
